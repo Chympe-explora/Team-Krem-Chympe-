@@ -9,11 +9,11 @@
   --limestone-dim: #C9C2AE;
   --river-teal:  #2E8079;   /* one river */
   --river-jade:  #6FA05C;   /* the other river */
-  --gold:        #C99A3B;   /* bamboo / turmeric accent, used sparingly */
+  --gold:        #2E8B57;   /* accent — matches the green used on the Packages/Tour pages */
   --ink:         #0B0F0D;
 
-  --display: "Fraunces", ui-serif, Georgia, serif;
-  --body:    "Work Sans", ui-sans-serif, system-ui, sans-serif;
+  --display: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --body:    "Inter", ui-sans-serif, system-ui, sans-serif;
   --mono:    "IBM Plex Mono", ui-monospace, monospace;
 
   --wrap: 1180px;
@@ -61,7 +61,7 @@ body::before{
   z-index:-1;
   background:
     radial-gradient(720px 620px at 8% 6%,   rgba(46,128,121,.28), transparent 60%),
-    radial-gradient(680px 640px at 92% 14%, rgba(201,154,59,.14), transparent 58%),
+    radial-gradient(680px 640px at 92% 14%, rgba(46,139,87,.14), transparent 58%),
     radial-gradient(760px 700px at 18% 88%, rgba(111,160,92,.22), transparent 60%),
     url("images/site-bg.jpg") center 30%/cover no-repeat,
     var(--cave);
@@ -98,25 +98,32 @@ a:focus-visible,button:focus-visible{
 }
 
 /* ============================================================
-   NAV — a frosted glass bar, always on
+   NAV — a floating glass card, matching the header on the
+   Packages/Tour booking pages (rounded, inset from the edges)
    ============================================================ */
 .site-nav{
-  position:fixed; top:0; left:0; right:0; z-index:100;
+  position:fixed; top:14px; left:14px; right:14px; z-index:100;
+  max-width:calc(var(--wrap) - 48px);
+  margin:0 auto;
   display:flex; align-items:center; justify-content:space-between;
-  padding:16px 24px;
-  background:rgba(11,15,13,.35);
+  padding:14px 22px;
+  background:var(--glass-fill-strong);
   backdrop-filter:blur(var(--blur-md)) saturate(150%);
   -webkit-backdrop-filter:blur(var(--blur-md)) saturate(150%);
-  border-bottom:1px solid rgba(239,233,218,.08);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
-  transition:background .3s ease, padding .3s ease, box-shadow .3s ease;
+  border:1px solid var(--glass-border);
+  border-radius:999px;
+  box-shadow:var(--glass-shadow);
+  transition:background .3s ease, padding .3s ease, box-shadow .3s ease, border-radius .3s ease;
 }
 .site-nav.scrolled{
-  background:rgba(11,15,13,.55);
+  background:rgba(11,15,13,.65);
   backdrop-filter:blur(var(--blur-lg)) saturate(160%);
   -webkit-backdrop-filter:blur(var(--blur-lg)) saturate(160%);
-  padding:11px 24px;
+  padding:11px 20px;
   box-shadow:0 12px 32px -14px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.08);
+}
+@media (max-width:600px){
+  .site-nav{left:10px;right:10px;top:10px;padding:11px 16px}
 }
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none}
 .brand img{height:34px;width:34px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 1px var(--glass-border)}
@@ -146,7 +153,7 @@ a:focus-visible,button:focus-visible{
   box-shadow:0 8px 22px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.2);
   border:1px solid var(--glass-border);
 }
-.nav-cta-book:hover{background:rgba(201,154,59,.28);border-color:rgba(201,154,59,.5)}
+.nav-cta-book:hover{background:rgba(46,139,87,.28);border-color:rgba(46,139,87,.5)}
 @media (max-width:400px){
   .nav-ctas{gap:6px}
   .nav-cta{padding:9px 13px;font-size:12.5px}
@@ -486,10 +493,10 @@ a:focus-visible,button:focus-visible{
   margin-top:22px;
   font-family:var(--mono);font-size:12px;letter-spacing:.08em;
   text-transform:uppercase;color:var(--gold);
-  background:rgba(201,154,59,.08);
+  background:rgba(46,139,87,.08);
   backdrop-filter:blur(var(--blur-sm));
   -webkit-backdrop-filter:blur(var(--blur-sm));
-  border:1px solid rgba(201,154,59,.4);
+  border:1px solid rgba(46,139,87,.4);
   padding:9px 16px;border-radius:999px;
 }
 
