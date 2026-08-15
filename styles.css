@@ -602,14 +602,14 @@ footer{
 .collapse-toggle-center{margin-left:auto;margin-right:auto}
 
 .collapse-panel{
-  max-height:0;
-  opacity:0;
-  overflow:hidden;
+  max-height:none;
+  opacity:1;
+  overflow: visible;
   margin-top:0;
   transition:max-height .5s ease, opacity .4s ease, margin-top .4s ease;
 }
 .collapse-panel.is-open{
-  max-height:3000px;
+  max-height:none;
   opacity:1;
   margin-top:22px;
 }
