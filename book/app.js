@@ -312,14 +312,10 @@
   // Root App
   // ---------------------------------------------------------------------
   function App() {
-    // Deep-link support: opening index.html?start=packages jumps straight
-    // to the package-selection page (skips the marketing homepage) — used
-    // by the "Book" button on the main informational site.
-    var initialPage = 1;
-    try {
-      if (/[?&]start=packages/.test(window.location.search)) initialPage = 2;
-    } catch (e) { /* ignore */ }
-    var pageState = useState(initialPage); var page = pageState[0], setPage = pageState[1];
+    // This app has no separate marketing homepage of its own — that's what
+    // the main informational site (../index.html) is for. Page 1 here is
+    // the package-selection page, so the booking flow always opens there.
+    var pageState = useState(1); var page = pageState[0], setPage = pageState[1];
     var pkgState = useState(null); var pkg = pkgState[0], setPkg = pkgState[1];
     var menuState = useState(false); var mobileMenuOpen = menuState[0], setMobileMenuOpen = menuState[1];
     var galleryState = useState("All"); var galleryFilter = galleryState[0], setGalleryFilter = galleryState[1];
@@ -424,7 +420,7 @@
       setSubmitted(true);
       saveBookingRecord(visitorCodeRef.current);
       window.open(whatsappLink(), "_blank");
-      setPage(6);
+      setPage(5);
       return true;
     }
 
@@ -483,7 +479,7 @@
 
     function goToPackage(which) {
       setPkg(which);
-      setPage(3);
+      setPage(2);
     }
 
     function invoiceLines() {
@@ -564,14 +560,14 @@
           (CONTENT.nav && CONTENT.nav.items || ["Home", "Explore", "Packages", "Gallery", "Booking", "Contact"]).map(function (p, i) {
             return h("button", {
               key: p,
-              onClick: function () { setPage(p === "Home" ? 1 : 2); },
-              className: "px-4 py-1.5 rounded-full text-[13px] transition " + (i === 0 && page === 1 ? "bg-white text-black" : "text-white/80 hover:text-white hover:bg-white/10")
+              onClick: function () { if (p === "Home") { window.location.href = "../index.html"; } else { setPage(1); } },
+              className: "px-4 py-1.5 rounded-full text-[13px] transition " + (p !== "Home" && page === 1 ? "bg-white text-black" : "text-white/80 hover:text-white hover:bg-white/10")
             }, p);
           })
         ),
         h(
           "div", { className: "flex items-center gap-2" },
-          h("button", { onClick: function () { setPage(2); }, className: "hidden md:block bg-[#2E8B57] hover:bg-[#257a4b] px-5 py-2 rounded-full text-sm font-medium transition" }, t("bookNow", "Book Now")),
+          h("button", { onClick: function () { setPage(1); }, className: "hidden md:block bg-[#2E8B57] hover:bg-[#257a4b] px-5 py-2 rounded-full text-sm font-medium transition" }, t("bookNow", "Book Now")),
           h("button", { onClick: function () { setMobileMenuOpen(!mobileMenuOpen); }, className: "md:hidden w-9 h-9 rounded-full bg-white/10 border border-white/10 flex items-center justify-center" }, mobileMenuOpen ? h(X, { size: 18 }) : h(Menu, { size: 18 }))
         )
       ),
@@ -580,101 +576,12 @@
         (CONTENT.nav && CONTENT.nav.mobileItems || ["Home", "Packages", "Gallery"]).map(function (p) {
           return h("button", {
             key: p,
-            onClick: function () { setPage(p === "Home" ? 1 : 2); setMobileMenuOpen(false); },
+            onClick: function () { if (p === "Home") { window.location.href = "../index.html"; } else { setPage(1); } setMobileMenuOpen(false); },
             className: "w-full text-left px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10"
           }, p);
         }),
-        h("button", { onClick: function () { setPage(2); setMobileMenuOpen(false); }, className: "w-full bg-[#2E8B57] py-3 rounded-full font-medium" }, t("bookNow", "Book Now")),
+        h("button", { onClick: function () { setPage(1); setMobileMenuOpen(false); }, className: "w-full bg-[#2E8B57] py-3 rounded-full font-medium" }, t("bookNow", "Book Now")),
         h("a", { href: "admin.html", className: "block text-center text-[11px] text-white/30 pt-1" }, "Admin")
-      )
-    );
-
-    // ---- Page 1: Home ------------------------------------------------
-    var titleWords = CONTENT.hero.title.split(" ");
-    var page1 = page === 1 && h(
-      "main", { className: "max-w-[1280px] mx-auto px-4 md:px-6 pb-32 space-y-6" },
-      h(
-        "div", { className: "grid md:grid-cols-[1.15fr_0.85fr] gap-6" },
-        h(
-          GlassCard, { className: "p-8 md:p-12" },
-          h("div", { className: "inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/10 text-[11px] tracking-widest" }, CONTENT.hero.badge),
-          h(
-            "h1", { className: "mt-6 text-[32px] md:text-[56px] font-bold leading-[0.95] tracking-tight" },
-            titleWords.slice(0, 2).join(" "), h("br"), h("span", { className: "text-white/70" }, titleWords.slice(2).join(" "))
-          ),
-          h("p", { className: "mt-5 text-white/70 text-[15px] leading-relaxed max-w-[520px]" }, CONTENT.hero.sub),
-          h("div", { className: "mt-8 flex gap-3" }, h("button", { onClick: function () { setPage(2); }, className: "bg-[#2E8B57] hover:bg-[#257a4b] px-7 py-3 rounded-full text-sm font-semibold flex items-center gap-2" }, "Book Now ", h(ArrowRight, { size: 16 })))
-        ),
-        h(
-          GlassCard, { className: "p-5 md:p-6 flex flex-col justify-between" },
-          h(
-            "div", { className: "space-y-4" },
-            h("div", { className: "flex items-center justify-between" }, h("span", { className: "text-sm text-white/70 flex items-center gap-2" }, h(Users, { size: 16 }), t("visitors", " Visitors")), h("span", { className: "text-sm font-medium" }, t("visitorRange", "1 - 5 People"))),
-            h("div", { className: "h-px bg-white/10" }),
-            h("div", { className: "flex items-center justify-between" }, h("span", { className: "text-sm text-white/70 flex items-center gap-2" }, h(Clock, { size: 16 }), t("duration", " Duration")), h("span", { className: "text-sm font-medium" }, CONTENT.hero.duration)),
-            h("div", { className: "h-px bg-white/10" }),
-            h("div", { className: "flex items-center justify-between" }, h("span", { className: "text-sm text-white/70 flex items-center gap-2" }, h(IndianRupee, { size: 16 }), t("price", " Price")), h("span", { className: "text-sm font-medium" }, CONTENT.hero.priceLabel)),
-            h("div", { className: "mt-6 rounded-[16px] overflow-hidden border border-white/10" }, h("img", { src: CONTENT.sectionImages.heroCave, className: "w-full h-[180px] object-cover" }))
-          ),
-          h("button", { onClick: function () { setPage(2); }, className: "mt-6 w-full bg-[#2E8B57] hover:bg-[#257a4b] py-3 rounded-full text-sm font-semibold" }, t("bookNow", "Book Now"))
-        )
-      ),
-      SECTIONS.trustBar && h(
-        GlassCard, { className: "px-6 py-4 flex flex-wrap items-center justify-between gap-4" },
-        h(
-          "div", { className: "flex items-center gap-3" },
-          h("div", { className: "flex -space-x-2" }, [0, 1, 2, 3].map(function (p) { return h("img", { key: p, src: "https://i.pravatar.cc/100?img=" + (10 + p), className: "w-8 h-8 rounded-full border-2 border-black/30" }); })),
-          h("div", { className: "text-[13px]" }, h("span", { className: "font-semibold" }, TRUST.trustedText), " ", h("span", { className: "text-white/60" }, TRUST.travelersText))
-        ),
-        h(
-          "div", { className: "flex gap-6 text-[13px]" },
-          h("span", { className: "flex items-center gap-2" }, h(Star, { size: 14, className: "text-amber-400" }), " " + TRUST.googleRatingText),
-          h("span", { className: "flex items-center gap-2" }, h(Shield, { size: 14, className: "text-emerald-400" }), " " + TRUST.safetyCertifiedText),
-          h("span", { className: "flex items-center gap-2" }, h(Award, { size: 14 }), " " + TRUST.ecoTourismText)
-        )
-      ),
-      (SECTIONS.ourStory || SECTIONS.statsRow || SECTIONS.meetGuide) && h(
-        "div", { className: "grid md:grid-cols-[1.1fr_0.9fr] gap-6" },
-        SECTIONS.ourStory && h(
-          GlassCard, { className: "p-8 md:p-10" },
-          h("h2", { className: "text-2xl font-semibold" }, t("ourStory", "Our Story")),
-          h(
-            "div", { className: "mt-8 space-y-6 border-l border-white/10 pl-6 relative" },
-            STORY_TIMELINE.map(function (p) {
-              return h(
-                "div", { key: p.title, className: "relative" },
-                h("div", { className: "absolute -left-[31px] top-1 w-3 h-3 rounded-full bg-[#2E8B57] border-2 border-white/20" }),
-                h("div", { className: "text-[11px] tracking-widest text-white/50" }, p.year),
-                h("div", { className: "font-medium mt-1" }, p.title),
-                h("div", { className: "text-[13px] text-white/60 mt-1" }, p.desc)
-              );
-            })
-          )
-        ),
-        (SECTIONS.statsRow || SECTIONS.meetGuide) && h(
-          "div", { className: "space-y-6" },
-          SECTIONS.statsRow && h(
-            GlassCard, { className: "p-6 grid grid-cols-2 gap-4" },
-            [
-              { k: "12KM", v: t("statForestTrailLabel", "Forest Trail") },
-              { k: "2 Hour", v: t("statAverageTrekLabel", "Average Trek") },
-              { k: "100+", v: t("statSpeciesLabel", "Species") },
-              { k: "4.9", v: t("statGoogleRatingLabel", "Google Rating") }
-            ].map(function (p) {
-              return h("div", { key: p.v, className: "rounded-[16px] bg-white/5 border border-white/10 p-5" }, h("div", { className: "text-2xl font-bold" }, p.k), h("div", { className: "text-[12px] text-white/60 mt-1" }, p.v));
-            })
-          ),
-          SECTIONS.meetGuide && h(
-            GlassCard, { className: "p-6 flex gap-4 items-center" },
-            h("img", { src: CONTENT.guide.image, className: "w-16 h-16 rounded-full object-cover border border-white/20" }),
-            h(
-              "div", null,
-              h("div", { className: "font-semibold" }, t("meetYourGuide", "Meet Your Guide")),
-              h("div", { className: "text-[13px] text-white/80" }, CONTENT.guide.name, " • ", CONTENT.guide.role),
-              h("div", { className: "text-[12px] text-white/60 mt-1 max-w-[280px]" }, CONTENT.guide.bio)
-            )
-          )
-        )
       )
     );
 
@@ -691,8 +598,10 @@
     var sharedTourCard = SECTIONS.sharedTourCard && h(
       GlassCard, { className: "overflow-hidden group" },
       h(
-        "div", { className: "px-6 pt-6 flex items-center justify-between" },
-        h("div", { className: "px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs border border-white/10" }, PKG.sharedTour.badge)
+        "div", { className: "h-44 relative overflow-hidden" },
+        h("img", { src: CONTENT.sectionImages.sharedPackageCard, className: "w-full h-full object-cover group-hover:scale-110 transition duration-700" }),
+        h("div", { className: "absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent" }),
+        h("div", { className: "absolute top-4 left-4 px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs border border-white/10" }, PKG.sharedTour.badge)
       ),
       h(
         "div", { className: "p-6" },
@@ -719,8 +628,10 @@
     var privatePackageCard = SECTIONS.privatePackageCard && h(
       GlassCard, { className: "overflow-hidden group" },
       h(
-        "div", { className: "px-6 pt-6 flex items-center justify-between" },
-        h("div", { className: "px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs border border-white/10" }, PKG.privatePackage.badge)
+        "div", { className: "h-44 relative overflow-hidden" },
+        h("img", { src: CONTENT.sectionImages.privatePackageCard, className: "w-full h-full object-cover group-hover:scale-110 transition duration-700" }),
+        h("div", { className: "absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent" }),
+        h("div", { className: "absolute top-4 left-4 px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs border border-white/10" }, PKG.privatePackage.badge)
       ),
       h(
         "div", { className: "p-6" },
@@ -737,8 +648,8 @@
       )
     );
 
-    // ---- Page 2: Packages & Gallery ------------------------------------
-    var page2 = page === 2 && h(
+    // ---- Page 1: Packages & Gallery ------------------------------------
+    var page1 = page === 1 && h(
       "main", { className: "max-w-[1280px] mx-auto px-4 md:px-6 pb-32 space-y-6" },
       h(
         GlassCard, { className: "p-8 md:p-10 text-center" },
@@ -775,7 +686,7 @@
       )
     );
 
-    // ---- Page 3: Booking form (varies by package) ----------------------
+    // ---- Page 2: Booking form (varies by package) ----------------------
     var contactFields = h(
       "div", { className: "grid md:grid-cols-2 gap-5" },
       h("label", { className: "space-y-2 block" }, h("span", { className: "text-xs text-white/60" }, t("fullName", "Full Name")), h("input", { value: contact.name, onChange: function (e) { setContact(Object.assign({}, contact, { name: e.target.value })); }, placeholder: "Your name", className: "w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 outline-none focus:border-emerald-400/50 text-sm" })),
@@ -1043,7 +954,7 @@
       )
     );
 
-    var page3 = page === 3 && h(
+    var page2 = page === 2 && h(
       "main", { className: "max-w-[900px] mx-auto px-4 md:px-6 pb-32 space-y-6" },
       h(
         GlassCard, { className: "p-6 md:p-8" },
@@ -1054,7 +965,7 @@
           "button",
           {
             disabled: !contact.name || !contact.whatsapp || !contact.date,
-            onClick: function () { setPage(4); },
+            onClick: function () { setPage(3); },
             className: "mt-8 w-full bg-[#2E8B57] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#257a4b] py-3.5 rounded-full font-semibold flex items-center justify-center gap-2"
           },
           t("nextViewPricing", "Next — View Pricing "), h(ArrowRight, { size: 18 })
@@ -1062,8 +973,8 @@
       )
     );
 
-    // ---- Page 4: Pricing / invoice calculator (Shared Tour & Camping) --
-    var page4 = page === 4 && h(
+    // ---- Page 3: Pricing / invoice calculator (Shared Tour & Camping) --
+    var page3 = page === 3 && h(
       "main", { className: "max-w-[1280px] mx-auto px-4 md:px-6 pb-32 space-y-6" },
       h(GlassCard, { className: "p-8 text-center" }, h("h2", { className: "text-3xl font-bold" }, t("pricingFacilities", "Pricing & Facilities")), h("p", { className: "text-white/60 text-sm mt-2" }, packageLabel, " — itemized invoice")),
       h(
@@ -1082,15 +993,15 @@
           GlassCard, { className: "p-6 h-fit sticky top-24" },
           h("h4", { className: "font-semibold" }, t("totalCalculator", "Total Calculator")),
           h("div", { className: "mt-4 flex justify-between font-bold text-lg" }, h("span", null, t("totalAmount", "Total Amount")), h("span", null, money(grandTotal))),
-          h("button", { onClick: function () { setPage(5); }, className: "mt-4 w-full bg-[#2E8B57] hover:bg-[#257a4b] py-3 rounded-full font-semibold" }, t("payNow", "Pay Now")),
+          h("button", { onClick: function () { setPage(4); }, className: "mt-4 w-full bg-[#2E8B57] hover:bg-[#257a4b] py-3 rounded-full font-semibold" }, t("payNow", "Pay Now")),
           h("div", { className: "text-[11px] text-white/40 text-center mt-2" }, (CONTENT.payment || {}).advanceNote)
         )
       )
     );
 
-    // ---- Page 5: Payment -----------------------------------------------
+    // ---- Page 4: Payment -----------------------------------------------
     var PAY = CONTENT.payment || {};
-    var page5 = page === 5 && h(
+    var page4 = page === 4 && h(
       "main", { className: "max-w-[900px] mx-auto px-4 md:px-6 pb-32" },
       h(
         GlassCard, { className: "p-6 md:p-8" },
@@ -1177,8 +1088,8 @@
       )
     );
 
-    // ---- Page 6: Confirmation -------------------------------------------
-    var page6 = page === 6 && h(
+    // ---- Page 5: Confirmation -------------------------------------------
+    var page5 = page === 5 && h(
       "main", { className: "max-w-[600px] mx-auto px-4 md:px-6 pb-32" },
       h(
         GlassCard, { className: "p-10 text-center" },
@@ -1214,15 +1125,15 @@
             "Open WhatsApp Again"
           )
         ),
-        h("button", { onClick: function () { setPage(1); setPkg(null); setBookingCode(""); setSubmitError(""); setSubmitted(false); }, className: "mt-4 w-full bg-white/5 border border-white/10 py-3 rounded-full font-semibold" }, t("backToHome", "Back to Home"))
+        h("button", { onClick: function () { setPkg(null); setBookingCode(""); setSubmitError(""); setSubmitted(false); window.location.href = "../index.html"; }, className: "mt-4 w-full bg-white/5 border border-white/10 py-3 rounded-full font-semibold" }, t("backToHome", "Back to Home"))
       )
     );
 
     // ---- Bottom nav -------------------------------------------------
-    // Pages 2 and 3 each have their own dedicated call-to-action button
-    // (package cards, and the booking form's "Next" submit button), so the
-    // generic bottom-nav "Next" only needs to handle page 1.
-    var totalPages = 6;
+    // Every page has its own dedicated call-to-action button (package
+    // cards on page 1, the booking form's "Next" submit button, "Pay Now",
+    // etc.), so the bottom nav here only ever needs to handle Back.
+    var totalPages = 5;
     var bottomNav = h(
       "div", { className: "fixed bottom-0 inset-x-0 z-30 p-3 md:p-4 pointer-events-none" },
       h(
@@ -1238,11 +1149,7 @@
           className: "px-5 py-2 rounded-full bg-white/10 border border-white/10 text-sm flex items-center gap-2"
         }, h(ArrowLeft, { size: 16 }), t("back", " Back")),
         h("div", { className: "flex items-center gap-2 text-[11px] text-white/40" }, h("span", { className: "w-2 h-2 rounded-full bg-emerald-400 animate-pulse" }), " Page ", page, " / ", totalPages),
-        page === 1 && h("button", {
-          onClick: function () { setPage(2); },
-          className: "px-6 py-2 rounded-full bg-[#2E8B57] hover:bg-[#257a4b] text-sm font-medium flex items-center gap-2"
-        }, t("next", "Next "), h(ArrowRight, { size: 16 })),
-        page !== 1 && h("div", { className: "w-[92px]" })
+        h("div", { className: "w-[92px]" })
       )
     );
 
@@ -1254,7 +1161,7 @@
         h("div", { className: "absolute inset-0 bg-black/40 backdrop-blur-[1px]" }),
         h("div", { className: "absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60" })
       ),
-      header, page1, page2, page3, page4, page5, page6, bottomNav,
+      header, page1, page2, page3, page4, page5, bottomNav,
       h("style", null, "\n        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@500;600;700&display=swap');\n        *{font-family:Inter, Poppins, sans-serif}\n        ::-webkit-scrollbar{width:6px;height:6px}\n        ::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.15);border-radius:99px}\n      ")
     );
   }
