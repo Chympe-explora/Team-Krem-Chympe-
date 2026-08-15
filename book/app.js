@@ -598,7 +598,7 @@
     var sharedTourCard = SECTIONS.sharedTourCard && h(
       GlassCard, { className: "overflow-hidden group" },
       h(
-        "div", { className: "h-30 relative overflow-hidden" },
+        "div", { className: "h-20 relative overflow-hidden" },
         h("img", { src: CONTENT.sectionImages.sharedPackageCard, className: "w-full h-full object-cover group-hover:scale-110 transition duration-700" }),
         h("div", { className: "absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent" }),
         h("div", { className: "absolute top-4 left-4 px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs border border-white/10" }, PKG.sharedTour.badge)
