@@ -86,7 +86,7 @@ window.KC_CONTENT = {
     // Each line below becomes its own paragraph. Add or remove lines freely.
     paragraphs: [
       "Deep in Meghalaya's rainforest, in Khaddum village, East Jaintia Hills, the Chympe cave runs further underground than almost anywhere else in India — and the waterfall that shares its name feeds the river that runs through it.",
-      "Inside, in water that's never seen daylight, lives a fish with no eyes. It never needed them."
+      "Inside, in water that's never seen daylight, lives a fish with no eyes it is officially named Neolissochilus pnar. Commonly known as the Pnar cavefish, it holds the extraordinary biological title of being the world's largest known subterranean fish."
     ],
 
     // Short facts shown as a list. Add, remove, or edit freely.
@@ -119,7 +119,7 @@ window.KC_CONTENT = {
 
     paragraphs: [
       "Senly Suchiang grew up in these hills, in East Jaintia District. Trained as an engineer, he watched the factories and mines spread through the district around him — forests and land cleared for ore and minerals, one valley at a time.",
-      "Khaddum, his own village, still had what those places had lost. A cave that ran for kilometres. A waterfall that fed it. A forest nobody had touched. Senly saw the beauty his village already held, and set out to build eco-tourism around it — a reason to keep Chympe wild, not mined."
+      "Brishyrnot, his own village, still had what those places had lost. A cave that ran for kilometres. A waterfall that fed it. A forest nobody had touched. Senly saw the beauty his village already held, and set out to build eco-tourism around it — a reason to keep Chympe wild, not mined."
     ],
 
     name: "Senly Suchiang",
@@ -152,7 +152,9 @@ window.KC_CONTENT = {
     // "cards" above instead.
     alsoHereLabel: "Also here",
     alsoHere: [
-      "Cave Diving",
+      "Cave exploration",
+       "Forest Trekking",
+       "Overnight Camping",
       "Off-Roading",
       "Bridge Crossing — where two rivers of different colour meet"
     ]
@@ -168,7 +170,7 @@ window.KC_CONTENT = {
       { src: "images/waterfall-gallery.jpg", alt: "Wide view of Chympe waterfall and pool" },
       { src: "images/confluence.jpg",        alt: "A guide rafting through the cave river" },
       { src: "images/camping-2.jpg",         alt: "A tent tucked into the root system of a rainforest tree" },
-      { src: "images/underground-pool.jpg",  alt: "Cave mouth opening onto turquoise water" },
+      { src: "images/underground-pool.jpg",  alt: "Underground natural swimming pool" },
       { src: "images/trekking.jpg",          alt: "Bamboo grove trail" },
       { src: "images/photography.jpg",       alt: "Golden flowstone formation" },
       { src: "images/cave-exploration.jpg",  alt: "Visitors at the cave entrance" },
@@ -185,7 +187,7 @@ window.KC_CONTENT = {
     // Add or remove lines freely — this becomes a simple list.
     included: [
       "Life jacket",
-      "Boat",
+      "Bamboo raft",
       "A trained local guide",
       "Torch",
       "Basic first aid"
