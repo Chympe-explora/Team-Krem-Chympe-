@@ -236,9 +236,9 @@ a:focus-visible,button:focus-visible{
    SECTION SHELL — sections sit directly on the mesh; glass
    panels carry the content within them.
    ============================================================ */
-.section{padding:20px 0}
+.section{padding:8px 0}
 .section-head{
-  max-width:680px;margin-bottom:15px;
+  max-width:680px;margin-bottom:6px;
   background:var(--glass-fill);
   backdrop-filter:blur(var(--blur-lg)) saturate(150%);
   -webkit-backdrop-filter:blur(var(--blur-lg)) saturate(150%);
